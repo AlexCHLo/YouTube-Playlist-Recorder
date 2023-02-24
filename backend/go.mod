@@ -13,6 +13,7 @@ require (
 	golang.org/x/crypto v0.6.0 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
+	google.golang.org/api v0.110.0 // indirect
 	myfunctions v1.0.0 // local function
 )
 

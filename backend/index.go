@@ -4,17 +4,26 @@ import (
   "net/http"
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
+  "google.golang.org/api/youtube/v3"
   "fmt"
   "myfunctions" // local functions
   "strings"
+  "os"
 )
 
 // global variable
 var youtubeAPI_key = ""
+var tls = true // put false if you want to do http instead of https
 
 // This function is to
 func main() {
-	youtubeAPI_key = myfunctions.Setup()
+   // Get Youtube API Key
+  youtubeAPI_key = myfunctions.Setup()
+
+ // should we fail to get youtube api key, then stop the whole process.
+  if (youtubeAPI_key == "") {
+    os.Exit(3)    
+  }
 	fmt.Println(youtubeAPI_key)
 
   // Creates default gin router with Logger and Recovery middleware already attached
@@ -51,6 +60,19 @@ func main() {
 		  "message" : "piss",
 	  })
     })
+
+    api.GET("/getClient", func(ctx *gin.Context) {
+      client := myfunctions.GetClient(youtube.YoutubeReadonlyScope)
+      fmt.Println(client)
+    })
+
+    api.GET("/getInformation", func(ctx *gin.Context) {
+      client := myfunctions.GetClient(youtube.YoutubeReadonlyScope)
+      state := ctx.Query("state")
+      code := ctx.Query("code")
+      ctx.Query("scope")
+      fmt.Println()
+    })
   }
 
     // Need to fix the 404 page not found
@@ -66,6 +88,12 @@ func main() {
 
   // router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })
 
-  // Start listening and serving requests at localhost:5000
-  router.Run(":5000")
+  if tls {
+    // Development SSL to ensure that I can get an HTTPS
+    router.RunTLS(":5000", "./certifications/cert.pem", "./certifications/key.pem")
+  } else {
+    // Start listening and serving requests at localhost:5000
+    router.Run(":5000")
+  }
+
 }

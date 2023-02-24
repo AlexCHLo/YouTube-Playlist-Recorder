@@ -1,5 +1,11 @@
 package myfunctions
 
+
+/////////////////////////////////////////////////////////////////////
+// Code is from api-samples                                        //
+// https://github.com/youtube/api-samples/blob/master/go/oauth2.go //
+/////////////////////////////////////////////////////////////////////
+
 import (
         "encoding/json"
         "fmt"
@@ -57,7 +63,7 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 
 // getClient uses a Context and Config to retrieve a Token
 // then generate a Client. It returns the generated Client.
-func getClient(scope string) *http.Client {
+func GetClient(scope string) *http.Client {
         ctx := context.Background()
         
         b, err := ioutil.ReadFile("client_secret.json")
@@ -74,7 +80,7 @@ func getClient(scope string) *http.Client {
         
         // Use a redirect URI like this for a web app. The redirect URI must be a
         // valid one for your OAuth2 credentials.
-        config.RedirectURL = "http://localhost:8090"
+        // config.RedirectURL = "http://localhost:8090"
         // Use the following redirect URI if launchWebServer=false in oauth2.go
         // config.RedirectURL = "urn:ietf:wg:oauth:2.0:oob"
         
