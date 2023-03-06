@@ -10,9 +10,9 @@ Will be making HTTP call instead of using whatever gizmo that Youtube provide to
 
 Requires 
 > Access Token
-
+> Playlist ID
 */
 
-func RetrievePlayList() {
+func RetrievePlayListVideo() {
 	fmt.Println("Testing")
 }

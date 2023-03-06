@@ -2,9 +2,10 @@ package main
 
 import (
   "net/http"
+  // "net/url" // used for redirecting users
   "github.com/gin-gonic/gin"
   "github.com/gin-gonic/contrib/static"
-  "google.golang.org/api/youtube/v3"
+  // "google.golang.org/api/youtube/v3"
   "fmt"
   "myfunctions" // local functions
   "strings"
@@ -20,10 +21,11 @@ func main() {
    // Get Youtube API Key
   youtubeAPI_key = myfunctions.Setup()
 
- // should we fail to get youtube api key, then stop the whole process.
-  if (youtubeAPI_key == "") {
+   // should we fail to get youtube api key, then stop the whole process.
+   if (youtubeAPI_key == "") {
     os.Exit(3)    
   }
+
 	fmt.Println(youtubeAPI_key)
 
   // Creates default gin router with Logger and Recovery middleware already attached
@@ -61,17 +63,63 @@ func main() {
 	  })
     })
 
+    /*
+    Get information from client. Redirect the client to api/getClient should
+    they want to log in to let the application get access to client's unlisted/private
+    playlist.
+    */
     api.GET("/getClient", func(ctx *gin.Context) {
-      client := myfunctions.GetClient(youtube.YoutubeReadonlyScope)
-      fmt.Println(client)
+      client_id := myfunctions.ParseSecretJSON("client_secret.json", "Client_id")
+      redirect_uri := myfunctions.ParseSecretJSON("client_secret.json", "Redirect_uris")
+      response_type := "code"
+      scope := "https://www.googleapis.com/auth/youtube.readonly"
+      my_url := myfunctions.CreateRequestURL(client_id, redirect_uri, response_type, scope)
+      ctx.Redirect(http.StatusSeeOther, my_url)
     })
 
+    /*
+    After the user authorize the application to view client's unlisted/private playlists. Google will redirect the 
+    user back to the website of course.
+    */
+
     api.GET("/getInformation", func(ctx *gin.Context) {
-      client := myfunctions.GetClient(youtube.YoutubeReadonlyScope)
-      state := ctx.Query("state")
+
+      // state := ctx.Query("state")
+      
+      // scope := ctx.Query("scope")
+
+      // fmt.Println(state)
+      // fmt.Println(code)
+      // fmt.Println(scope)
+
+      // ctx.JSON(http.StatusOK, gin.H {
+      //   "message" : "getInformation",
+      //   "state" : state,
+      //   "code" : code,
+      //   "scope" : scope,
+      // })
+
+      //  Exchange access code for token
+
+      client_id := myfunctions.ParseSecretJSON("client_secret.json", "Client_id")
+      client_secret :=  myfunctions.ParseSecretJSON("client_secret.json", "Client_secret")
       code := ctx.Query("code")
-      ctx.Query("scope")
-      fmt.Println()
+      grant_type := "authorization_code"
+      redirect_uri := myfunctions.ParseSecretJSON("client_secret.json", "Redirect_uris")
+      request_url := "https://oauth2.googleapis.com/token"
+
+      fmt.Println(client_id)
+      fmt.Println(client_secret)
+      fmt.Println(code)
+      fmt.Println(grant_type)
+      fmt.Println(redirect_uri)
+
+      myfunctions.ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url)
+
+      // finally return the user to home.
+      fmt.Println("Moving URL")
+      ctx.Redirect(http.StatusSeeOther, "https://localhost:5000/")
+
     })
   }
 
@@ -85,8 +133,6 @@ func main() {
 		}
 		//default 404 page not found
 	})
-
-  // router.NoRoute(func(ctx *gin.Context) { ctx.JSON(http.StatusNotFound, gin.H{}) })
 
   if tls {
     // Development SSL to ensure that I can get an HTTPS
