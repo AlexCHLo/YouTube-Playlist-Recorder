@@ -83,22 +83,6 @@ func main() {
     */
 
     api.GET("/getInformation", func(ctx *gin.Context) {
-
-      // state := ctx.Query("state")
-      
-      // scope := ctx.Query("scope")
-
-      // fmt.Println(state)
-      // fmt.Println(code)
-      // fmt.Println(scope)
-
-      // ctx.JSON(http.StatusOK, gin.H {
-      //   "message" : "getInformation",
-      //   "state" : state,
-      //   "code" : code,
-      //   "scope" : scope,
-      // })
-
       //  Exchange access code for token
 
       client_id := myfunctions.ParseSecretJSON("client_secret.json", "Client_id")

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/url"
 	"net/http"
-	// "os"
-	// "io/ioutil"
-	// "log"
+	"bytes"
+	"io/ioutil"
 	"encoding/json"
+	"log"
 )
 
 /*
@@ -47,38 +47,75 @@ func CreateRequestURL (client_id, redirect_uri, response_type, scope string) str
 	return myURL
 }
 
+// Our POST Response
 type OAuth2Token struct {
 	Access_token string `json:"access_token"`
-	Expires_in string `json:"expires_in"`
+	Expires_in int `json:"expires_in"` 
 	Token_type string `json:"token_type"`
 	Scope string `json:"scope"`
 	Refresh_token string `json:"refresh_token"`
 }
 
+// Our POST Request body
+type OAuth2Exchange struct {
+	Client_id string `json:"client_id"`
+	Client_secret string `json:"client_secret"`
+	Code string `json:"code"`
+	Grant_type string `json:"grant_type"`
+	Redirect_uri string `json:"redirect_uri"`
+}
 
-// Has to be POST. The POST is a x-www-form-ur-encoded
+// Has to be POST. The POST can be any shape or form like a x-www-form-ur-encoded or JSON. In this case,
+// I would like to play around with more JSON, so I would send a POST with json for the body
 func ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url string) {
 	fmt.Println("ExchangeAccessCodeForToken - Sanity Check")
 
-	params := url.Values{}
-	
-	params.Add("client_id", client_id)
-	params.Add("client_secret", client_secret)
-	params.Add("code", code)
-	params.Add("grant_type", grant_type)
-	params.Add("redirect_uri", redirect_uri)
+	posturl := request_url
 
-	// encodedData := params.Encode()
-	resp, err := http.PostForm(request_url, params)
 
-	if err != nil {
-		fmt.Println(err)
+	// Creating a Post Body!
+	exchangingCode := OAuth2Exchange{
+		Client_id: client_id,
+		Client_secret: client_secret,
+		Code: code,
+		Grant_type: grant_type,
+		Redirect_uri: redirect_uri,
 	}
 
-	var res map[string]interface{}
+	body, _ := json.Marshal(exchangingCode)
 
-    json.NewDecoder(resp.Body).Decode(&res)
+	resp, err := http.Post(posturl, "application/json", bytes.NewBuffer(body))
 
-    fmt.Println(res["form"])
+	if err != nil {
+		panic(err)
+	}
 
+	defer resp.Body.Close()
+
+	//Check response code, if New user is created then read response.
+	if resp.StatusCode == http.StatusOK {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			//Failed to read response.
+			panic(err)
+		}
+
+		//Convert bytes to String and print
+		jsonStr := string(body)
+		fmt.Println("Response: ", jsonStr)
+
+		// Obtain Token
+		var token OAuth2Token
+		err = json.Unmarshal(body, &token)
+
+		if err != nil {
+			panic(err)
+		}
+
+		log.Println(token.Access_token)
+
+	} else {
+		//The status is not Created. print the error.
+		fmt.Println("Get failed with error: ", resp.Status)
+	}
 }
