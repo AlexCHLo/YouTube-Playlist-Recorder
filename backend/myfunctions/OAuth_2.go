@@ -67,7 +67,7 @@ type OAuth2Exchange struct {
 
 // Has to be POST. The POST can be any shape or form like a x-www-form-ur-encoded or JSON. In this case,
 // I would like to play around with more JSON, so I would send a POST with json for the body
-func ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url string) {
+func ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url string) string {
 	fmt.Println("ExchangeAccessCodeForToken - Sanity Check")
 
 	posturl := request_url
@@ -114,8 +114,14 @@ func ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redi
 
 		log.Println(token.Access_token)
 
+		return token.Access_token
+
 	} else {
 		//The status is not Created. print the error.
 		fmt.Println("Get failed with error: ", resp.Status)
+		panic("No Code Found")
 	}
+
+	
+
 }

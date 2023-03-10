@@ -22,8 +22,6 @@ type WebStuff struct {
 	Javascript_origins []string `json:"javascript_origins"`
 }
 
-
-
 /*
 	Client_id
 	Project_id

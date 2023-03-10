@@ -15,6 +15,7 @@ import (
 // global variable
 var youtubeAPI_key = ""
 var tls = true // put false if you want to do http instead of https
+var accessToken = ""
 
 // This function is to
 func main() {
@@ -98,13 +99,27 @@ func main() {
       fmt.Println(grant_type)
       fmt.Println(redirect_uri)
 
-      myfunctions.ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url)
+      accessToken = myfunctions.ExchangeAccessCodeForToken(client_id, client_secret, code, grant_type, redirect_uri, request_url)
+
 
       // finally return the user to home.
       fmt.Println("Moving URL")
       ctx.Redirect(http.StatusSeeOther, "https://localhost:5000/")
 
     })
+
+    api.GET("/retrievePlaylist", func(ctx *gin.Context) {
+
+      part := "snippet,contentDetails"
+      mine := true
+
+      myfunctions.RetrievePlayList(part, accessToken, mine)
+
+      ctx.JSON(http.StatusOK, gin.H {
+        "message" : "piss",
+      })
+    })
+
   }
 
     // Need to fix the 404 page not found
@@ -115,7 +130,6 @@ func main() {
       })
 
 		}
-		//default 404 page not found
 	})
 
   if tls {

@@ -1,7 +1,13 @@
 package myfunctions
 
+/* IMPORTANT DOCUMENTATION TO TAKE A LOOK
+https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps#callinganapi
+https://developers.google.com/youtube/v3/docs/playlists/list
+*/
+
 import (
-	"fmt"
+	// "fmt"
+	// "net/http"
 )
 
 /* Requires Youtube Playlist API and user Token to make authorization
@@ -13,6 +19,9 @@ Requires
 > Playlist ID
 */
 
+
+// We can do this in a GET Request.
 func RetrievePlayListVideo() {
-	fmt.Println("Testing")
+
+
 }
