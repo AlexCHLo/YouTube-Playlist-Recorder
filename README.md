@@ -3,9 +3,11 @@ My plan for this project is to develop a small applications which utilize the Yo
 
 To display this Card, I will be using React and MUI. I chose React and MUI because I have a bit experience working with it when I was doing Capstone Project at York 2021-2022. I would like to further enchance my learning and be able to develope this project to put onto my resume.
 
+Another thing that I also plan to do is to implement SQLite database as well. I'm doing this because I need a way to save playlists and have it in a database.
+
 For the backend, I will be using Golong, mostly because I never used Golong and would like to get a better feel for it. 
 
-tl;dr, a simple Youtube application that display all the videos in your playlist using Golong, Gin and Reactjs.
+tl;dr, a simple Youtube application that display all the videos in your playlist using Golong, Gin and Reactjs. Also saves user's playlist onto SQLite database.
 
 ### Notes
 Just a side note, this is my first time using Golang and the plan is to create the apps on the "Go" (heh) while learning how to use Go here and there. The pro is that this is might be the quicker way to get experience in programming with Go. The downside is that I might be miss the nuance in Go, but that's for another time I suppose. Also please do not use this on some sketchy places as this project offers no protection in user information.
