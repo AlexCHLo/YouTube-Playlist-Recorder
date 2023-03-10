@@ -18,15 +18,16 @@ god send. I find the website effective.
 https://gobyexample.com/environment-variables
 
 ### Go API Calling
-TBD
+Basically I mostly used the HTTP GET and POST request to the Google API database.
 
-### SQL
+### SQLite
 I'm implmenting SQLite because I need to find a way to save certain data. Such as the name of the video and the channel that the video is published at. I chose SQL because it is a good skill to try to have some experience with as well as I need a way to save those. 
 
 ### Postman
 A useful developing tools that can help you create API calls and see if it works.
 
 ## Gin
+A high performance HTTP web framework written in Golang. Has routing, middleware support, rendering, etc.
 
 ### Warning
 This is not a representation of my practical skill, but I'm just figuring out how to do a project myself since the projects that I have done was in collaboration or was for school and isn't really a kind of work that I can say its a project that I have done.
@@ -48,7 +49,8 @@ Purely for documentation for myself should I ever forget where I got such inform
 |HTTP/REST Calls with Youtube API|https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps | 
 |URL Encoding| https://golang.cafe/blog/how-to-url-encode-string-in-golang-example.html |
 |Golang and JSON Parsing| https://www.golinuxcloud.com/golang-parse-json/ |
-|Getting Google TOken|
+|Making Post Request | https://www.educative.io/answers/how-to-make-http-post-request-with-json-body-in-golang |
+| Making API Request with Youtube | https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps#callinganapi|
 
 ## Prerequeistes
 |Requirement|
@@ -58,11 +60,12 @@ Purely for documentation for myself should I ever forget where I got such inform
 |3. Gin|
 |4. Secret Key from Youtube|
 |5. Authorized Test Users|
+|6. client_secret.json|
 
 # Setup
 |Steps|
 |-|
-|1. Run the Backend in the directory /backend/index.go and use the command `go run index.js`|
+|1. Run the Backend in the directory /backend/index.go and use the command `go run index.js` or `go run .` either way should work.|
 |2. If frontend not built yet, then go to the directory /frontend/ use the command `npm run build`. The backend serves the build package of the frontend|
 |3. Assuming localhost hasn't been changed. The default localhost is localhost:5000. Go there if you want to see any changes|
 
