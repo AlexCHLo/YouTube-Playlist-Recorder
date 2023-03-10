@@ -1,4 +1,4 @@
-# Youtube-API-Playlist
+# YouTube-Playlist-Recorder
 My plan for this project is to develop a small applications which utilize the Youtube API V3. My primary goal in using the Youtube API V3 is to obtain a users' personalized playlist and have it displayed on the frontend. Each video in the playlist will be displayed as a cards, where each card contains video information (may not be possible). 
 
 To display this Card, I will be using React and MUI. I chose React and MUI because I have a bit experience working with it when I was doing Capstone Project at York 2021-2022. I would like to further enchance my learning and be able to develope this project to put onto my resume.
