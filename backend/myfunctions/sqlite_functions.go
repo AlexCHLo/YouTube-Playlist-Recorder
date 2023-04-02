@@ -23,4 +23,6 @@ func databaseInit() {
 
 }
 
-// 
+// save list of playlists
+
+// save list of videos in a playlist specified
